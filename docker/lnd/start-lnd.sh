@@ -39,8 +39,8 @@ set_default() {
 }
 
 # Set default variables if needed.
-RPCUSER=$(set_default "$RPCUSER" "devuser")
-RPCPASS=$(set_default "$RPCPASS" "devpass")
+RPCUSER=$(set_default "$RPCUSER" "kek")
+RPCPASS=$(set_default "$RPCPASS" "kek")
 DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
@@ -50,14 +50,17 @@ if [[ "$CHAIN" == "litecoin" ]]; then
 fi
 
 exec lnd \
-    --noseedbackup \
-    --logdir="/data" \
+    --rpclisten="0.0.0.0:10001" \
+    --listen="0.0.0.0:10011" \
+    --restlisten="0.0.0.0:8001" \
+    --datadir="/k8s/data" \
+    --logdir="/k8s/log" \
+    --debuglevel="info" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/rpc/rpc.cert" \
-    "--$BACKEND.rpchost"="blockchain" \
+    "--$BACKEND.rpccert"="/rpc/bitcoin/rpc.cert" \
+    "--$BACKEND.rpchost"="142.93.13.155" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
-    --debuglevel="$DEBUG" \
     "$@"
