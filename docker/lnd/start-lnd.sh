@@ -44,6 +44,7 @@ RPCPASS=$(set_default "$RPCPASS" "kek")
 DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
+CHAIN=$(set_default "$USERID" "0")
 BACKEND="btcd"
 if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
@@ -56,6 +57,7 @@ exec lnd \
     --datadir="/k8s/data" \
     --logdir="/k8s/log" \
     --debuglevel="info" \
+    --tlscertpath="/rpc/lnd-$USERID/tls.cert" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
