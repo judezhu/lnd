@@ -58,7 +58,7 @@ exec  mkdir "/rpc/lnd-$USERID" & lnd \
     --logdir="/k8s/log" \
     --debuglevel="info" \
     --tlscertpath="/rpc/lnd-$USERID/tls.cert" \
-    --no-macaroons \
+    --adminmacaroonpath="/rpc/lnd-$USERID/admin.macaroon" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
