@@ -44,13 +44,13 @@ RPCPASS=$(set_default "$RPCPASS" "kek")
 DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
-CHAIN=$(set_default "$USERID" "0")
+USERID=$(set_default "$USERID" "0")
 BACKEND="btcd"
 if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-exec lnd \
+exec  mkdir "/rpc/lnd-$USERID" & lnd \
     --rpclisten="0.0.0.0:10001" \
     --listen="0.0.0.0:10011" \
     --restlisten="0.0.0.0:8001" \
@@ -58,6 +58,7 @@ exec lnd \
     --logdir="/k8s/log" \
     --debuglevel="info" \
     --tlscertpath="/rpc/lnd-$USERID/tls.cert" \
+    --no-macaroons \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
