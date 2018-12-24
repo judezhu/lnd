@@ -41,6 +41,7 @@ set_default() {
 # Set default variables if needed.
 RPCUSER=$(set_default "$RPCUSER" "kek")
 RPCPASS=$(set_default "$RPCPASS" "kek")
+RPCHOST=$(set_default "$RPCHOST" "45.63.36.223")
 DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
@@ -64,12 +65,13 @@ exec lnd \
     --logdir="$NODEDIR/log" \
     --debuglevel="info" \
     --tlscertpath="$NODEDIR/tls.cert" \
+    --tlskeypath="$NODEDIR/tls.key" \
     --adminmacaroonpath="$NODEDIR/admin.macaroon" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
     "--$BACKEND.rpccert"="/rpc/bitcoin/rpc.cert" \
-    "--$BACKEND.rpchost"="45.63.36.223" \
+    "--$BACKEND.rpchost"="$RPCHOST" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
     "$@"
