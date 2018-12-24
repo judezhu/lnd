@@ -50,20 +50,26 @@ if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-exec  mkdir "/rpc/lnd-$USERID" & lnd \
+NODEDIR="/rpc/lnd-$USERID"
+if [ ! -d "$NODEDIR" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  mkdir "$NODEDIR"
+fi
+
+exec lnd \
     --rpclisten="0.0.0.0:10001" \
     --listen="0.0.0.0:10011" \
     --restlisten="0.0.0.0:8001" \
-    --datadir="/k8s/data" \
-    --logdir="/k8s/log" \
+    --datadir="$NODEDIR/data" \
+    --logdir="$NODEDIR/log" \
     --debuglevel="info" \
-    --tlscertpath="/rpc/lnd-$USERID/tls.cert" \
-    --adminmacaroonpath="/rpc/lnd-$USERID/admin.macaroon" \
+    --tlscertpath="$NODEDIR/tls.cert" \
+    --adminmacaroonpath="$NODEDIR/admin.macaroon" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
     "--$BACKEND.rpccert"="/rpc/bitcoin/rpc.cert" \
-    "--$BACKEND.rpchost"="142.93.13.155" \
+    "--$BACKEND.rpchost"="45.63.36.223" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
     "$@"
