@@ -70,7 +70,7 @@ exec lnd \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/rpc/bitcoin/rpc.cert" \
+    "--$BACKEND.rpccert"="/rpc/$CHAIN/$NETWORK/rpc.cert" \
     "--$BACKEND.rpchost"="$RPCHOST" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
