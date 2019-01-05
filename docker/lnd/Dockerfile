@@ -11,13 +11,12 @@ ENV GODEBUG netdns=cgo
 
 # Install dependencies and install/build lnd.
 RUN apk add --no-cache --update alpine-sdk \
+    build-base \
     git \
     make \
 &&  cd /go/src/github.com/lightningnetwork/lnd \
 &&  make \
-&&  make install \
-&&  cd / \
-&&  mkdir k8s
+&&  make install
 
 # Start a new, final image to reduce size.
 FROM alpine as final
@@ -31,7 +30,8 @@ COPY --from=builder /go/bin/lnd /bin/
 
 # Add bash.
 RUN apk add --no-cache \
-    bash
+    bash \
+    curl
 
 # Copy the entrypoint script.
 COPY "docker/lnd/start-lnd.sh" .
