@@ -44,15 +44,15 @@ RPCPASS=$(set_default "$RPCPASS" "kek")
 DEBUG=$(set_default "$DEBUG" "info")
 NETWORK=$(set_default "$NETWORK" "simnet")
 
-BTCDDIR="btcd-$NETWORK"
+BTCDDIR="btcd/$NETWORK"
 if [ ! -d "/rpc/$BTCDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir "/rpc/$BTCDDIR"
+  mkdir -p "/rpc/$BTCDDIR"
 fi
 
 if [ ! -d "/data/$BTCDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir "/data/$BTCDDIR"
+  mkdir -p "/data/$BTCDDIR"
 fi
 
 PARAMS=$(echo \

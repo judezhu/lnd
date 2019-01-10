@@ -51,15 +51,15 @@ if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-LNDDIR="lnd-$NODEID"
+LNDDIR="lnd/$NODEID"
 if [ ! -d "/rpc/$LNDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir "/rpc/$LNDDIR"
+  mkdir -p "/rpc/$LNDDIR"
 fi
 
 if [ ! -d "/data/$LNDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir "/data/$LNDDIR"
+  mkdir -p "/data/$LNDDIR"
 fi
 
 exec lnd \
