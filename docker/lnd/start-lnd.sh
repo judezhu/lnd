@@ -45,32 +45,37 @@ RPCHOST=$(set_default "$RPCHOST" "45.63.36.223")
 DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
-USERID=$(set_default "$USERID" "0")
+NODEID=$(set_default "$NODEID" "0")
 BACKEND="btcd"
 if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-NODEDIR="/rpc/lnd-$USERID"
-if [ ! -d "$NODEDIR" ]; then
+LNDDIR="lnd-$NODEID"
+if [ ! -d "/rpc/$LNDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir "$NODEDIR"
+  mkdir "/rpc/$LNDDIR"
+fi
+
+if [ ! -d "/data/$LNDDIR" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  mkdir "/data/$LNDDIR"
 fi
 
 exec lnd \
     --rpclisten="0.0.0.0:10001" \
     --listen="0.0.0.0:10011" \
     --restlisten="0.0.0.0:8001" \
-    --datadir="$NODEDIR/data" \
-    --logdir="$NODEDIR/log" \
+    --datadir="/data/$LNDDIR/data" \
+    --logdir="/data/$LNDDIR/log" \
     --debuglevel="info" \
-    --tlscertpath="$NODEDIR/tls.cert" \
-    --tlskeypath="$NODEDIR/tls.key" \
-    --adminmacaroonpath="$NODEDIR/admin.macaroon" \
+    --tlscertpath="/rpc/$LNDDIR/tls.cert" \
+    --tlskeypath="/rpc/$LNDDIR/tls.key" \
+    --adminmacaroonpath="/rpc/$LNDDIR/admin.macaroon" \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/rpc/$CHAIN/$NETWORK/rpc.cert" \
+    "--$BACKEND.rpccert"="/rpc/btcd/$NETWORK/rpc.cert" \
     "--$BACKEND.rpchost"="$RPCHOST" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \

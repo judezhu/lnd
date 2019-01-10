@@ -39,20 +39,31 @@ set_default() {
 }
 
 # Set default variables if needed.
-RPCUSER=$(set_default "$RPCUSER" "devuser")
-RPCPASS=$(set_default "$RPCPASS" "devpass")
+RPCUSER=$(set_default "$RPCUSER" "kek")
+RPCPASS=$(set_default "$RPCPASS" "kek")
 DEBUG=$(set_default "$DEBUG" "info")
 NETWORK=$(set_default "$NETWORK" "simnet")
+
+BTCDDIR="btcd-$NETWORK"
+if [ ! -d "/rpc/$BTCDDIR" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  mkdir "/rpc/$BTCDDIR"
+fi
+
+if [ ! -d "/data/$BTCDDIR" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  mkdir "/data/$BTCDDIR"
+fi
 
 PARAMS=$(echo \
     "--$NETWORK" \
     "--debuglevel=$DEBUG" \
     "--rpcuser=$RPCUSER" \
     "--rpcpass=$RPCPASS" \
-    "--datadir=/data" \
-    "--logdir=/data" \
-    "--rpccert=/rpc/rpc.cert" \
-    "--rpckey=/rpc/rpc.key" \
+    "--datadir=/data/$BTCDDIR" \
+    "--logdir=/data/$BTCDDIR" \
+    "--rpccert=/rpc/$BTCDDIR/rpc.cert" \
+    "--rpckey=/rpc/$BTCDDIR/rpc.key" \
     "--rpclisten=0.0.0.0" \
     "--txindex"
 )
