@@ -51,7 +51,7 @@ if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-LNDDIR="lnd/$NODEID"
+LNDDIR="lnd/$NETWORK/$NODEID"
 if [ ! -d "/rpc/$LNDDIR" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
   mkdir -p "/rpc/$LNDDIR"
@@ -80,3 +80,9 @@ exec lnd \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
     "$@"
+
+if [ -e "/rpc/$LNDDIR/admin.macaroon" ]; then
+  # if wallet already exists
+  sleep 5s
+  curl -X POST "https://makoto-dev.bleevin.cloud/wallet/v1/wallet/unlock?token=KnsUSZmvWouQRLHHRQYhiNpsqAHIYECDblDgIpHfUDCsLseAqKhfDMToZHeauNDesjEPiaGMmkxRMcDQpInHHwYlykZEFTyPfBPkuZdsMcjnQdbnTolAQvcDAxLPvzvRntCVNqjwcAfTBQOyzkTYYaOJGuKwGNAFLCdAZdHjVfYSQmxnRUgVIKRXGJgfuwZQjAtjpfgbQcXTvKhRkKwreBiFkWdUyFDeNjBGTeNxWhYqlTfKghjqkNrqshzFWikT&nodeId=$NODEID"
+fi
