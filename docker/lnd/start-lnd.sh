@@ -62,27 +62,29 @@ if [ ! -d "/data/$LNDDIR" ]; then
   mkdir -p "/data/$LNDDIR"
 fi
 
-exec lnd \
-    --rpclisten="0.0.0.0:10001" \
-    --listen="0.0.0.0:10011" \
-    --restlisten="0.0.0.0:8001" \
-    --datadir="/data/$LNDDIR/data" \
-    --logdir="/data/$LNDDIR/log" \
-    --debuglevel="info" \
-    --tlscertpath="/rpc/$LNDDIR/tls.cert" \
-    --tlskeypath="/rpc/$LNDDIR/tls.key" \
-    --adminmacaroonpath="/rpc/$LNDDIR/admin.macaroon" \
-    "--$CHAIN.active" \
-    "--$CHAIN.$NETWORK" \
-    "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/rpc/btcd/$NETWORK/rpc.cert" \
-    "--$BACKEND.rpchost"="$RPCHOST" \
-    "--$BACKEND.rpcuser"="$RPCUSER" \
-    "--$BACKEND.rpcpass"="$RPCPASS" \
-    "$@"
+lnd \
+  --rpclisten="0.0.0.0:10001" \ 
+  --listen="0.0.0.0:10011" \
+  --restlisten="0.0.0.0:8001" \
+  --datadir="/data/$LNDDIR/data" \
+  --logdir="/data/$LNDDIR/log" \
+  --debuglevel="info" \
+  --tlscertpath="/rpc/$LNDDIR/tls.cert" \
+  --tlskeypath="/rpc/$LNDDIR/tls.key" \
+  --adminmacaroonpath="/rpc/$LNDDIR/admin.macaroon" \
+  "--$CHAIN.active" \
+  "--$CHAIN.$NETWORK" \
+  "--$CHAIN.node"="btcd" \
+  "--$BACKEND.rpccert"="/rpc/btcd/$NETWORK/rpc.cert" \
+  "--$BACKEND.rpchost"="$RPCHOST" \
+  "--$BACKEND.rpcuser"="$RPCUSER" \
+  "--$BACKEND.rpcpass"="$RPCPASS" \
+  "$@" \
+  &
 
 if [ -e "/rpc/$LNDDIR/admin.macaroon" ]; then
   # if wallet already exists
-  sleep 5s
+  echo "waiting 30 sec to unlock wallet..."
+  sleep 30s
   curl -X POST "https://makoto-dev.bleevin.cloud/wallet/v1/wallet/unlock?token=KnsUSZmvWouQRLHHRQYhiNpsqAHIYECDblDgIpHfUDCsLseAqKhfDMToZHeauNDesjEPiaGMmkxRMcDQpInHHwYlykZEFTyPfBPkuZdsMcjnQdbnTolAQvcDAxLPvzvRntCVNqjwcAfTBQOyzkTYYaOJGuKwGNAFLCdAZdHjVfYSQmxnRUgVIKRXGJgfuwZQjAtjpfgbQcXTvKhRkKwreBiFkWdUyFDeNjBGTeNxWhYqlTfKghjqkNrqshzFWikT&nodeId=$NODEID"
 fi
