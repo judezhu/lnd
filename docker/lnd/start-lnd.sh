@@ -82,9 +82,16 @@ lnd \
   "$@" \
   &
 
-if [ -e "/rpc/$LNDDIR/admin.macaroon" ]; then
+if [ -e "/rpc/$LNDDIR/admin.macaroon" ] && [ -e "/rpc/$LNDDIR/tls.cert" ]; then
   # if wallet already exists
-  echo "waiting 30 sec to unlock wallet..."
+  echo "Wallet exists. Waiting 30 sec to unlock wallet..."
   sleep 30s
   curl -X POST "https://makoto-dev.bleevin.cloud/wallet/v1/wallet/unlock?token=KnsUSZmvWouQRLHHRQYhiNpsqAHIYECDblDgIpHfUDCsLseAqKhfDMToZHeauNDesjEPiaGMmkxRMcDQpInHHwYlykZEFTyPfBPkuZdsMcjnQdbnTolAQvcDAxLPvzvRntCVNqjwcAfTBQOyzkTYYaOJGuKwGNAFLCdAZdHjVfYSQmxnRUgVIKRXGJgfuwZQjAtjpfgbQcXTvKhRkKwreBiFkWdUyFDeNjBGTeNxWhYqlTfKghjqkNrqshzFWikT&nodeId=$NODEID"
+fi
+
+if [ ! -e "/rpc/$LNDDIR/admin.macaroon" ] && [ -e "/rpc/$LNDDIR/tls.cert" ]; then
+  # if wallet not exists
+  echo "Wallet NOT exists. waiting 30 sec to create wallet..."
+  sleep 30s
+  curl -X POST "https://makoto-dev.bleevin.cloud/wallet/v1/wallet/create?token=KnsUSZmvWouQRLHHRQYhiNpsqAHIYECDblDgIpHfUDCsLseAqKhfDMToZHeauNDesjEPiaGMmkxRMcDQpInHHwYlykZEFTyPfBPkuZdsMcjnQdbnTolAQvcDAxLPvzvRntCVNqjwcAfTBQOyzkTYYaOJGuKwGNAFLCdAZdHjVfYSQmxnRUgVIKRXGJgfuwZQjAtjpfgbQcXTvKhRkKwreBiFkWdUyFDeNjBGTeNxWhYqlTfKghjqkNrqshzFWikT&nodeId=$NODEID"
 fi
