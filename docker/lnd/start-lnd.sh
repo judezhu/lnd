@@ -63,7 +63,7 @@ if [ ! -d "/data/$LNDDIR" ]; then
 fi
 
 lnd \
-  --rpclisten="0.0.0.0:10001" \ 
+  --rpclisten="0.0.0.0:10001" \
   --listen="0.0.0.0:10011" \
   --restlisten="0.0.0.0:8001" \
   --datadir="/data/$LNDDIR/data" \
