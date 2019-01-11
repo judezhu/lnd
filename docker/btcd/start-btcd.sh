@@ -50,9 +50,9 @@ if [ ! -d "/rpc/$BTCDDIR" ]; then
   mkdir -p "/rpc/$BTCDDIR"
 fi
 
-if [ ! -d "/data/$BTCDDIR" ]; then
+if [ ! -d "/data/btcd" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
-  mkdir -p "/data/$BTCDDIR"
+  mkdir -p "/data/btcd"
 fi
 
 PARAMS=$(echo \
@@ -60,8 +60,8 @@ PARAMS=$(echo \
     "--debuglevel=$DEBUG" \
     "--rpcuser=$RPCUSER" \
     "--rpcpass=$RPCPASS" \
-    "--datadir=/data/$BTCDDIR" \
-    "--logdir=/data/$BTCDDIR" \
+    "--datadir=/data/btcd" \
+    "--logdir=/data/btcd" \
     "--rpccert=/rpc/$BTCDDIR/rpc.cert" \
     "--rpckey=/rpc/$BTCDDIR/rpc.key" \
     "--rpclisten=0.0.0.0" \
