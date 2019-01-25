@@ -46,6 +46,7 @@ DEBUG=$(set_default "$DEBUG" "debug")
 NETWORK=$(set_default "$NETWORK" "simnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
 NODEID=$(set_default "$NODEID" "0")
+COLOR=$(set_default "$COLOR" "#EAC14E")
 BACKEND="btcd"
 if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
@@ -69,6 +70,8 @@ lnd \
   --datadir="/data/$LNDDIR/data" \
   --logdir="/data/$LNDDIR/log" \
   --debuglevel="info" \
+  --alias="$NODEID" \
+  --color="$COLOR" \
   --tlscertpath="/rpc/$LNDDIR/tls.cert" \
   --tlskeypath="/rpc/$LNDDIR/tls.key" \
   --adminmacaroonpath="/rpc/$LNDDIR/admin.macaroon" \
